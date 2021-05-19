@@ -1,0 +1,5 @@
+{
+    "fastq": "/Fastqs/",
+    "v_primers": "/Primers/v_primers.fasta",
+    "c_primers": "/Primers/c_primers.fasta"
+}
