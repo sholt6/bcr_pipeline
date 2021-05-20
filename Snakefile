@@ -18,7 +18,9 @@ rule mask_v_primers:
     output:
         "Masked_Reads/{sample}_v_masked.fasta"
     shell:
-        "MaskPrimers.py align -s {input.reads} -p {input.primers} -o {output}"
+        "MaskPrimers.py align -s {input.reads} "
+        "-p {input.primers} -o {output} "
+        "--revpr --mode mask "
 
 rule mask_c_primers:
     input:
@@ -27,4 +29,14 @@ rule mask_c_primers:
     output:
         "Masked_Reads/{sample}_vc_masked.fasta"
     shell:
-        "MaskPrimers.py align -s {input.reads} -p {input.primers} -o {output}"
+        "MaskPrimers.py align -s {input.reads} "
+        "-p {input.primers} -o {output} "
+        "--revpr --mode mask "
+
+rule count_primers:
+    input:
+        "Masked_Reads/{sample}_vc_masked.fasta"
+    output:
+        "{sample}_primer_counts.txt"
+    script:
+        "primer_counts.py -f {input} -o {output} "
