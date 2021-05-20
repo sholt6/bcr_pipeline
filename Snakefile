@@ -11,10 +11,20 @@ rule merge_reads:
     shell:
         "usearch -fastq_mergepairs {input} -fastaout {output} "
 
-rule mask_primers:
+rule mask_v_primers:
     input:
-        "Merged_Reads/{sample}_merged.fasta", sample=SAMPLES
+        reads="Merged_Reads/{sample}_merged.fasta", sample=SAMPLES,
+        primers="Primers/v_primers.fasta"
     output:
-        "Masked_Reads/{sample}_masked.fasta"
+        "Masked_Reads/{sample}_v_masked.fasta"
     shell:
-        "MaskPrimers.py align -s {input} -p {output}"
+        "MaskPrimers.py align -s {input.reads} -p {input.primers} -o {output}"
+
+rule mask_c_primers:
+    input:
+        reads="Masked_Reads/{sample}_v_masked.fasta",
+        primers="Primers/c_primers.fasta"
+    output:
+        "Masked_Reads/{sample}_vc_masked.fasta"
+    shell:
+        "MaskPrimers.py align -s {input.reads} -p {input.primers} -o {output}"
