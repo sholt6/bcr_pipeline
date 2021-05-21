@@ -14,12 +14,14 @@ def argument_parse():
     args = parser.parse_args()
     return args
 
+
 def get_id_content(line):
     if line[0] == '>':
         content = line.split('|')
         return content
     else:
         return None
+
 
 def get_primers(id_content):
     primers_regex = re.compile(r'PRIMER=')
@@ -33,10 +35,21 @@ def get_primers(id_content):
     
     return primers
 
+
+
+
 def main(arguments):
 
-    fasta_name = arguments.fasta
-    outfile_name = arguments.outfile
+    if arguments.fasta:
+        fasta_name = arguments.fasta
+    else:
+        fasta_name = snakemake.input[0]
+
+    if arguments.outfile:
+        outfile_name = arguments.outfile
+    else:
+        outfile_name = snakemake.output[0]
+    
     primer_counts = {}
 
     with open(fasta_name, 'r') as fasta_file:
@@ -53,8 +66,6 @@ def main(arguments):
     with open(outfile_name, 'w') as outfile:
         for primer in primer_counts.keys():
             outfile.write("%s: %s\n" % (primer, primer_counts[primer]))
-
-            
 
 
 if __name__ == '__main__':

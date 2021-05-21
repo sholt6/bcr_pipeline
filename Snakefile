@@ -39,4 +39,4 @@ rule count_primers:
     output:
         "{sample}_primer_counts.txt"
     script:
-        "primer_counts.py -f {input} -o {output} "
+        "primer_counts.py"
