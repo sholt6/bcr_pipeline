@@ -37,6 +37,14 @@ rule count_primers:
     input:
         "Masked_Reads/{sample}_vc_masked.fasta"
     output:
-        "{sample}_primer_counts.txt"
+        "Primer_Counts/{sample}_primer_counts.txt"
     script:
-        "primer_counts.py"
+        "scripts/primer_counts.py"
+
+rule plot_usage:
+    input:
+        "Primer_Counts/{sample}_primer_counts.txt"
+    output:
+        "plots/{sample}_primer_usage.svg"
+    script:
+        "scripts/plot_primer_usage.py"
